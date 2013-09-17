@@ -12,7 +12,7 @@ $(document).ready(function () {
 
   $("#amount").keyup(function () {
     var quote = $("#amount").val() * $("#price").val();
-    $("#quote").val(quote);
+    $("#quote").val(quote.toFixed(2));
   });
 
   $("#buy").click(function (e) {
@@ -64,9 +64,9 @@ stock.query = function (symbol) {
   // Query a stock
   var url = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%3D%22" + symbol + "%22%0A&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=";
   $.getJSON(url, function (data) {
-    $("#price").val(data.query.results.quote.Ask);
+    $("#price").val(data.query.results.quote.PreviousClose);
     var quote = $("#amount").val() * $("#price").val();
-    $("#quote").val(quote);
+    $("#quote").val(quote.toFixed(2));
     $("#amountContainer").show();
     $("#priceAndTotal").show();
   });
@@ -112,10 +112,10 @@ portfolio.list = function () {
     } // Skip sold shares
     var url = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%3D%22" + portfolio.database[key].symbol + "%22%0A&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=";
     $.getJSON(url, function (data) {
-      portfolio.database[key].movement = data.query.results.quote.Ask - portfolio.database[key].price;
-      portfolio.database[key].overallMovement = (data.query.results.quote.Ask * portfolio.database[key].amount) - (portfolio.database[key].price * portfolio.database[key].amount);
+      portfolio.database[key].movement = data.query.results.quote.PreviousClose - portfolio.database[key].price;
+      portfolio.database[key].overallMovement = (data.query.results.quote.PreviousClose * portfolio.database[key].amount) - (portfolio.database[key].price * portfolio.database[key].amount);
       portfolio.database[key].value = portfolio.database[key].price * portfolio.database[key].amount;
-      portfolio.database[key].currentPrice = data.query.results.quote.Ask;
+      portfolio.database[key].currentPrice = data.query.results.quote.PreviousClose;
       $("#stocks").append("<tr><td>" + portfolio.database[key].symbol + "</td>\
 	  <td>" + portfolio.database[key].amount + "</td>\
   	  <td>" + portfolio.database[key].price + "</td>\
