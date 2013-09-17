@@ -12,4 +12,4 @@
 
 # Screen shot
 
-[Screeny]: https://raw.github.com/JohnMcLear/paperTrader/master/img/screenshot.png "Screen shot"
+![alt text](https://raw.github.com/JohnMcLear/paperTrader/master/img/screenshot.png "Screenshot")
