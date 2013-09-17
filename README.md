@@ -1,6 +1,8 @@
 # Why this over others?
 
 * Simple learning platform
+* Host your own and roll your own environment
+* Super clean and open source
 
 # Getting started
 
