@@ -82,9 +82,10 @@ stock.buy = function (symbol, amount, price, quote) {
     quote: quote
   }
   localStorage.setItem('paperTrader', JSON.stringify(portfolio.database));
-  portfolio.balance();
-  portfolio.value();
   portfolio.list();
+
+  portfolio.update();
+
 }
 
 stock.sell = function (key, price) {
@@ -94,8 +95,7 @@ stock.sell = function (key, price) {
   portfolio.database[key].sold = {};
   portfolio.database[key].sold.date = new Date().getTime();
   portfolio.database[key].sold.price = price;
-  portfolio.balance();
-  portfolio.value();
+  portfolio.update();
   localStorage.setItem('paperTrader', JSON.stringify(portfolio.database)); // Finally save
 }
 
@@ -158,8 +158,7 @@ portfolio.list = function () {
 	  
 	  }
 	  
-      portfolio.balance();
-      portfolio.value();
+      portfolio.update();
     });
   });
 }
@@ -185,9 +184,8 @@ portfolio.dividend = function(symbol, csv, buyTS, amount, buyPrice){
 		 console.log("Adding ",symbol, "Divi pay out TS:",divDate, "Buy Timestamp", buyTS, "Amount:",dividend, " to balance");
 		 var total = (dividend * buyPrice) * amount;
 		 var balance = $("#balance").val();
-		 console.log(balance);
 		 balance = balance+total;
-		 $("#balance").val(balance.toFixed(2));
+		 $("#balance").val(parseFloat(balance).toFixed(2));
 	  }
 	}
   });
@@ -224,4 +222,15 @@ portfolio.balance = function () {
   var profitLoss = sales - purchases;
   var balance = 10000 + profitLoss;
   $("#balance").val(balance.toFixed(2));
+}
+
+portfolio.overall = function () {
+  var overall = parseFloat($("#balance").val()) + parseFloat($("#value").val());
+  $("#overall").val(overall);
+}
+
+portfolio.update = function () { // updates the portfolio.
+  portfolio.balance();
+  portfolio.value();
+  portfolio.overall();
 }
