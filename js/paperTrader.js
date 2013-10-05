@@ -38,9 +38,7 @@ $(document).ready(function () {
 
 });
 
-YAHOO.Finance = {}, YAHOO.Finance.SymbolSuggest = {};
-
-YAHOO.Finance.SymbolSuggest.ssCallback = function (data) {
+stock.yahooFinanceCallback = function (data) {
   $("#symbolSuggest").show();
   $("#symbolSuggestTable").html("");
   $.each(data.ResultSet.Result, function (key) {
@@ -53,7 +51,7 @@ YAHOO.Finance.SymbolSuggest.ssCallback = function (data) {
 
 stock.symbolSearch = function (searchString) {
   // Search for a stock symbol from a given search String
-  var url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query=" + searchString + "&callback=YAHOO.Finance.SymbolSuggest.ssCallback";
+  var url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query=" + searchString + "&callback=stock.yahooFinanceCallback";
   $.ajax({
     url: url,
     dataType: 'jsonp'
