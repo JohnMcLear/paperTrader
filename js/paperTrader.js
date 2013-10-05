@@ -115,7 +115,7 @@ portfolio.list = function () {
       portfolio.database[key].overallMovement = (data.query.results.quote.PreviousClose * portfolio.database[key].amount) - (portfolio.database[key].price * portfolio.database[key].amount);
       portfolio.database[key].value = portfolio.database[key].price * portfolio.database[key].amount;
       portfolio.database[key].currentPrice = data.query.results.quote.PreviousClose;
-      $("#stocks").append("<tr><td title='"+portfolio.database[key].name+"'>" + portfolio.database[key].symbol + "</td>\
+      $("#stocks").append("<tr><td title='"+portfolio.database[key].name+"'>" + portfolio.database[key].symbol.toUpperCase() + "</td>\
 	  <td>" + portfolio.database[key].amount + "</td>\
   	  <td>" + portfolio.database[key].price + "</td>\
 	  <td class='currentPrice'>" + portfolio.database[key].currentPrice + "</td>\
