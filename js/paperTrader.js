@@ -38,24 +38,27 @@ $(document).ready(function () {
 
 });
 
-stock.yahooFinanceCallback = function (data) {
-  $("#symbolSuggest").show();
-  $("#symbolSuggestTable").html("");
-  $.each(data.ResultSet.Result, function (key) {
-    var symbol = data.ResultSet.Result[key].symbol;
-    var name = data.ResultSet.Result[key].name;
-    $("#symbolSuggestTable").append("<tr data-symbol='" + symbol + "'><td class='symbolSelector'>" + symbol + "</td><td>" + name + "</td></tr>");
-  });
-
-}
-
 stock.symbolSearch = function (searchString) {
   // Search for a stock symbol from a given search String
-  var url = "http://d.yimg.com/autoc.finance.yahoo.com/autoc?query=" + searchString + "&callback=stock.yahooFinanceCallback";
-  $.ajax({
-    url: url,
-    dataType: 'jsonp'
-  });
+  var YAHOO = window.YAHOO = {Finance: {SymbolSuggest: {}}};
+	
+  YAHOO.Finance.SymbolSuggest.ssCallback = function (data) {
+    $("#symbolSuggest").show();
+    $("#symbolSuggestTable").html("");
+    $.each(data.ResultSet.Result, function (key) {
+      var symbol = data.ResultSet.Result[key].symbol;
+      var name = data.ResultSet.Result[key].name;
+      $("#symbolSuggestTable").append("<tr data-symbol='" + symbol + "'><td class='symbolSelector'>" + symbol + "</td><td>" + name + "</td></tr>");
+    });
+  };
+	
+  var url = [
+	"http://d.yimg.com/autoc.finance.yahoo.com/autoc?",
+	"query=" + searchString,
+	"&callback=YAHOO.Finance.SymbolSuggest.ssCallback"];
+	
+  $.getScript(url.join(""));
+  
 }
 
 stock.query = function (symbol) {
