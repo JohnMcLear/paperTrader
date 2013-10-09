@@ -64,12 +64,19 @@ stock.symbolSearch = function (searchString) {
 stock.query = function (symbol) {
   // Query a stock
   var url = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%3D%22" + symbol + "%22%0A&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=";
-  $.getJSON(url, function (data) {
-    $("#price").val(data.query.results.quote.PreviousClose);
-    var quote = $("#amount").val() * $("#price").val();
-    $("#quote").val(quote.toFixed(2));
-    $("#amountContainer").show();
-    $("#priceAndTotal").show();
+  $.getJSON({
+    url: url, 
+    contentType: "application/json; charset=utf-8",
+	success: function (data) {
+      $("#price").val(data.query.results.quote.PreviousClose);
+      var quote = $("#amount").val() * $("#price").val();
+      $("#quote").val(quote.toFixed(2));
+      $("#amountContainer").show();
+      $("#priceAndTotal").show();
+	},
+    error: function (errormessage) {
+      console.log("ERROR ACCESSING JSON BLOBBBBYY");
+    }
   });
 }
 
@@ -130,7 +137,7 @@ portfolio.list = function () {
 	  // Dividend Logic -- This may be completely broken because the ExDividendDate might be wrong..
 	  
 	  // Did we buy this stock before the exclusion date for dividends?
-	  if(data.query.results.quote.ExDividendDate){ // If dividends are given
+	  if(data.query.results.quote && data.query.results.quote.ExDividendDate){ // If dividends are given
 	    var exclusionDate = data.query.results.quote.ExDividendDate;
 		exclusionDate = exclusionDate.split(" "); // split by space
 		var month = exclusionDate[0];
@@ -144,26 +151,24 @@ portfolio.list = function () {
 	    
 		if(key < exclusionDate){ // If the timestamp of the purchase is before the time stamp of the exclusion
   	      console.log("Shares were purchased before the deadline for purchase so dividends are due");
-		  // TODO Logic for handling dividend payouts.
+		  
+	      var CSVURL1 = "http://ichart.finance.yahoo.com/table.csv?s=";
+          var CSVURL2 = "&a=07&b=19&c=2004&d=05&e=18&f=2009&g=v&ignore=.csv";
+	      var csvUrl = CSVURL1 + portfolio.database[key].symbol + CSVURL2;
+	  
+	      try{
+	        $.ajax({
+	          url: csvUrl, 
+	          success: function(csv){ 
+		        portfolio.dividend(portfolio.database[key].symbol, csv, key, portfolio.database[key].amount, portfolio.database[key].price); 
+		      }
+  	        });
+	      }catch(e){
+	  
+	      }
 	    }
 	  }
 	  // End Dividend Logic
-
-	  var CSVURL1 = "http://ichart.finance.yahoo.com/table.csv?s=";
-      var CSVURL2 = "&a=07&b=19&c=2004&d=05&e=18&f=2009&g=v&ignore=.csv";
-	  var csvUrl = CSVURL1 + portfolio.database[key].symbol + CSVURL2;
-	  
-	  try{
-	  $.ajax({
-	    url: csvUrl, 
-	    success: function(csv){ 
-		  portfolio.dividend(portfolio.database[key].symbol, csv, key, portfolio.database[key].amount, portfolio.database[key].price); 
-		}
-  	  });
-	  }catch(e){
-	  
-	  }
-	  
       portfolio.update();
     });
   });
@@ -171,7 +176,7 @@ portfolio.list = function () {
 
 portfolio.dividend = function(symbol, csv, buyTS, amount, buyPrice){
   // Figure out if dividends have been earned for this stock
-  // console.log("computing divvies for", symbol, csv);
+  console.log("computing divvies for", symbol, csv);
   var dividends = csv.split("\n");
   dividends.splice(0, 1);
   $.each(dividends, function(index, data){
@@ -183,11 +188,11 @@ portfolio.dividend = function(symbol, csv, buyTS, amount, buyPrice){
 	  divDate = new Date(divDate).getTime();
 	  // Did I have stocks when this dividend was issued?
 	  // TODO support the date I needed to have stock before being allowed to claim
-	  
+ 
 	  // console.log("Symbol:",symbol, "Divi pay out TS:",divDate, "Buy Timestamp", buyTS, "Amount:",dividend);
-	  if(buyTS > divDate){ // if we bought this share before the divis were issued, This should be <
+	  if(buyTS < divDate){ // if we bought this share before the divis were issued, This should be <
          // TODO change the above to <	    
-		 console.log("Adding ",symbol, "Divi pay out TS:",divDate, "Buy Timestamp", buyTS, "Amount:",dividend, " to balance");
+		 // console.log("Adding ",symbol, "Divi pay out TS:",divDate, "Buy Timestamp", buyTS, "Amount:",dividend, " to balance");
 		 var total = (dividend * buyPrice) * amount;
 		 var balance = $("#balance").val();
 		 balance = balance+total;
