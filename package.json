@@ -6,6 +6,7 @@
   "keywords": [ "trading", "stock exchange", "investing", "paper trading" ],
   "window": {
     "title": "paperTrading",
+	"icon" : "favicon.ico",
     "toolbar": false,
     "width": 1024,
     "height": 768,
