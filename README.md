@@ -11,12 +11,10 @@
 * No commission charge included in transactions
 * No taxes taken into account
 
-# Getting started (Node)
-* Install NodeJS & git -- http://nodejs.org & http://git-scm.com/
+# Getting started
+* Host a webserver on your local machine (Node or Apache is fine)
 * Clone this repo ``git clone https://github.com/JohnMcLear/paperTrader.git``
-* Install connect ``cd paperTrader`` ``npm install request``
-* Run server.js ``node server.js``
-* In your web browser visit ``http://localhost:8080/``
+* In your web browser visit ``http://localhost:8080/wherever you put paper Trader``
 * Begin trading.  Trading data is stored in local Storage so it will persist over time.
 
 # Screen shot

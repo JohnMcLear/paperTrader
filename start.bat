@@ -1,0 +1,1 @@
+nw.exe trade.nw
