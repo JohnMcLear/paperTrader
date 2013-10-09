@@ -1,1 +1,1 @@
-nw.exe trade.nw
+node-webkit\nw.exe node-webkit\trade.nw
