@@ -1,0 +1,20 @@
+{
+  "main": "index.html",
+  "name": "PaperTrader",
+  "description": "Paper Trading on the Stock exchange, virtual spending",
+  "version": "0.0.1",
+  "keywords": [ "trading", "stock exchange", "investing", "paper trading" ],
+  "window": {
+    "title": "paperTrading",
+    "toolbar": false,
+    "width": 1024,
+    "height": 768,
+    "position": "mouse",
+    "min_width": 400,
+    "min_height": 200
+  },
+  "webkit": {
+    "plugin": true
+  },
+  "node-remote": [ "*.yahooapis.com" , "*.yahoo.com" ]
+}

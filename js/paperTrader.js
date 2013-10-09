@@ -149,7 +149,10 @@ portfolio.list = function () {
 	  }
 	  // End Dividend Logic
 	  */
-	  var csvUrl = "/historic?symbol="+portfolio.database[key].symbol;
+	  var CSVURL1 = "http://ichart.finance.yahoo.com/table.csv?s=";
+      var CSVURL2 = "&a=07&b=19&c=2004&d=05&e=18&f=2009&g=v&ignore=.csv";
+	  var csvUrl = CSVURL1 + CSVURL2;
+	  
 	  try{
 	  $.ajax({
 	    url: csvUrl, 
