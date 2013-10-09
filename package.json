@@ -7,7 +7,7 @@
   "window": {
     "title": "paperTrading",
 	"icon" : "favicon.ico",
-    "toolbar": false,
+    "toolbar": true,
     "width": 1024,
     "height": 768,
     "position": "mouse",
