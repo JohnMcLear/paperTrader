@@ -128,7 +128,7 @@ portfolio.list = function () {
 	  <td class='sell' data-key=" + key + " data-currentprice=" + portfolio.database[key].currentPrice + ">Sell</td></tr>");
 	  
 	  // Dividend Logic -- This may be completely broken because the ExDividendDate might be wrong..
-	  /*
+	  
 	  // Did we buy this stock before the exclusion date for dividends?
 	  if(data.query.results.quote.ExDividendDate){ // If dividends are given
 	    var exclusionDate = data.query.results.quote.ExDividendDate;
@@ -148,10 +148,10 @@ portfolio.list = function () {
 	    }
 	  }
 	  // End Dividend Logic
-	  */
+
 	  var CSVURL1 = "http://ichart.finance.yahoo.com/table.csv?s=";
       var CSVURL2 = "&a=07&b=19&c=2004&d=05&e=18&f=2009&g=v&ignore=.csv";
-	  var csvUrl = CSVURL1 + CSVURL2;
+	  var csvUrl = CSVURL1 + portfolio.database[key].symbol + CSVURL2;
 	  
 	  try{
 	  $.ajax({
