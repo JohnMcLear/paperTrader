@@ -1107,3 +1107,22 @@
     overflow: visible !important;
   }
 }
+
+
+#symbolSuggest{
+  display:none;
+}
+
+#symbolSuggestTable > tr, .sell{
+  font-weight:bold;
+  cursor:pointer;
+  cursor:hand;
+}
+
+#amountContainer{
+  display:none;
+}
+
+#priceAndTotal{
+  display:none;
+}
