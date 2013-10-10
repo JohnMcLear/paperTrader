@@ -114,6 +114,7 @@ portfolio.list = function () {
   $("#stocks").html("");
   // Get how much each stock has changed first..
   $.each(portfolio.database, function (key) {
+    $("#portfolio").show();
     // console.log(portfolio.database);
     if (portfolio.database[key].sold) {
       return true;
